@@ -1,0 +1,100 @@
+Build a complete fullstack application called Patent Hash for patenting intellectual property using Hedera blockchain and AI.
+
+Tech Stack:
+
+    Frontend: React.js + Tailwind CSS (frontend must be a separate project from backend/middleware).
+
+    Middleware: Node.js + Express.js (handles API routes, authentication, database, and Hedera/AI integration).
+
+    Database: MySQL (store users, patents, transactions, AI analysis results).
+
+    Blockchain: Hedera SDK (JavaScript version).
+
+    AI: Integrate AI endpoints (e.g., OpenAI or custom ML model API calls).
+
+Primary Color: Orange (#FF6B00 or close shade).
+Secondary Color: White.
+
+Core Features to Implement:
+
+    Proof-of-Existence for Intellectual Property
+
+        Upload invention documents/images.
+
+        Generate SHA-256 hash and store on Hedera Consensus Service (HCS) with timestamp.
+
+        Save hash and metadata in MySQL.
+
+    Decentralized Patent Ledger
+
+        Public but privacy-preserving view of all registered patents.
+
+        Represent ownership as NFTs using Hedera Token Service.
+
+        Enable transfer and royalty payments via Hedera smart contracts.
+
+    Cross-border Patent Verification
+
+        API to verify patent ownership and creation date globally using Hedera low-cost transactions.
+
+    AI-powered Prior Art Search
+
+        Scan global patent/public databases via AI.
+
+        Use NLP to check semantic similarity, not just keywords.
+
+        Return similarity score and related patents.
+
+    AI-assisted Patent Drafting
+
+        User enters invention details → AI generates structured patent-ready document.
+
+    Plagiarism & Similarity Detection
+
+        AI flags potential conflicts or copied material before submission.
+
+    IP Valuation Model
+
+        AI predicts market value based on industry trends and similar filings.
+
+    Innovation Category Classification
+
+        AI auto-categorizes patents (medical tech, software, renewable energy, etc.).
+
+    Global Patent Verification Chatbot
+
+        AI chatbot queries Hedera ledger to instantly confirm ownership, creation date, licensing terms.
+
+Requirements:
+
+    Use Express.js to handle all API routes (uploading files, AI calls, Hedera transactions, MySQL queries).
+
+    Frontend communicates with backend via REST APIs.
+
+    Use Sequelize ORM or raw MySQL queries (depending on AI’s preference) to store and retrieve patent data.
+
+    Store uploaded files in a local /uploads directory and hash them before sending to Hedera.
+
+    Implement authentication (JWT-based).
+
+    Use a clean, modern, responsive UI with orange primary and white secondary colors.
+
+    Add reusable Tailwind UI components (buttons, modals, forms, tables).
+
+    Include sample patent data for testing.
+
+    Organize backend into /routes, /controllers, /models, /services folders.
+
+    Organize frontend with /components, /pages, /hooks, /utils structure.
+
+    Include a .env file for API keys (Hedera, AI model, database).
+
+Deliverables:
+
+    Full frontend React + Tailwind project in its own folder.
+
+    Full backend/middleware Node.js + Express + MySQL project in its own folder.
+
+    Readable, modular, well-commented code.
+
+    Instructions in README.md for setup and running both frontend and backend.
