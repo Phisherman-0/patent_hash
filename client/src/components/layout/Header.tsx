@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Search, Bell, Plus, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 
 interface HeaderProps {
   onMobileMenuToggle: () => void;
@@ -82,10 +82,12 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
           </Button>
 
           {/* Quick Actions */}
+          <Link href="/patents/file">
           <Button className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-medium transition-colors">
             <Plus size={16} className="mr-2" />
             New Patent
           </Button>
+            </Link>
         </div>
       </div>
     </header>
