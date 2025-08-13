@@ -1,12 +1,12 @@
-import { Client, TopicCreateTransaction, TopicMessageSubmitTransaction, TopicInfoQuery, TopicId, AccountId, PrivateKey, TokenCreateTransaction, TokenId, TokenMintTransaction, TokenNftInfoQuery } from "@hashgraph/sdk";
+import { Client, TopicCreateTransaction, TopicMessageSubmitTransaction, TopicInfoQuery, TopicId, AccountId, PrivateKey, TokenCreateTransaction, TokenId, TokenMintTransaction, TokenNftInfoQuery, TokenType, TokenSupplyType } from "@hashgraph/sdk";
 import crypto from "crypto";
 import fs from "fs";
 import type { Patent } from "@shared/schema";
 
 class HederaService {
-  private client: Client;
-  private operatorId: AccountId;
-  private operatorKey: PrivateKey;
+  private client: Client | null = null;
+  private operatorId: AccountId | null = null;
+  private operatorKey: PrivateKey | null = null;
 
   constructor() {
     // Initialize Hedera client
@@ -47,7 +47,7 @@ class HederaService {
       // Create a new topic for this patent if needed
       const topicCreateTx = new TopicCreateTransaction()
         .setTopicMemo(`Patent Hash Storage for ${patentId}`)
-        .setSubmitKey(this.operatorKey);
+        .setSubmitKey(this.operatorKey!);
 
       const topicCreateSubmit = await topicCreateTx.execute(this.client);
       const topicCreateReceipt = await topicCreateSubmit.getReceipt(this.client);
@@ -128,12 +128,12 @@ class HederaService {
       const tokenCreateTx = new TokenCreateTransaction()
         .setTokenName(`Patent: ${patent.title}`)
         .setTokenSymbol("PATENT")
-        .setTokenType(1) // NFT
-        .setSupplyType(1) // Finite
+        .setTokenType(TokenType.NonFungibleUnique) // NFT
+        .setSupplyType(TokenSupplyType.Finite) // Finite
         .setMaxSupply(1)
-        .setTreasuryAccountId(this.operatorId)
-        .setSupplyKey(this.operatorKey)
-        .setAdminKey(this.operatorKey);
+        .setTreasuryAccountId(this.operatorId!)
+        .setSupplyKey(this.operatorKey!)
+        .setAdminKey(this.operatorKey!);
 
       const tokenCreateSubmit = await tokenCreateTx.execute(this.client);
       const tokenCreateReceipt = await tokenCreateSubmit.getReceipt(this.client);
