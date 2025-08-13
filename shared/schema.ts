@@ -40,6 +40,8 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+
+
 // Patent status enum
 export const patentStatusEnum = pgEnum("patent_status", [
   "draft",

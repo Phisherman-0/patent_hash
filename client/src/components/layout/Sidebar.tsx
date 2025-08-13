@@ -98,9 +98,9 @@ export default function Sidebar({ className, onItemClick }: SidebarProps) {
   };
 
   return (
-    <aside className={cn("flex flex-col w-80 bg-white border-r border-gray-200 shadow-sm", className)}>
+    <aside className={cn("flex flex-col w-80 bg-white border-r border-gray-200 shadow-sm h-full", className)} data-testid="sidebar">
       {/* Logo and Brand */}
-      <div className="flex items-center justify-center h-16 px-6 bg-primary">
+      <div className="flex items-center justify-center h-16 px-6 bg-primary flex-shrink-0">
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
             <Fingerprint className="text-primary text-lg" />
@@ -109,8 +109,8 @@ export default function Sidebar({ className, onItemClick }: SidebarProps) {
         </div>
       </div>
 
-      {/* Navigation Menu */}
-      <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+      {/* Navigation Menu - Scrollable */}
+      <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto min-h-0 scrollbar-thin" data-testid="sidebar-nav">
         {navigationSections.map((section) => (
           <div key={section.title} className="mb-6">
             <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
@@ -127,6 +127,7 @@ export default function Sidebar({ className, onItemClick }: SidebarProps) {
                     href={item.href}
                     className={cn("sidebar-nav-item", isActive && "active")}
                     onClick={onItemClick}
+                    data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
                   >
                     <Icon className="mr-3" size={16} />
                     {item.label}
@@ -139,7 +140,7 @@ export default function Sidebar({ className, onItemClick }: SidebarProps) {
       </nav>
 
       {/* User Profile at Bottom */}
-      <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
+      <div className="flex-shrink-0 border-t border-gray-200 p-4" data-testid="user-profile">
         <div className="flex items-center w-full">
           <Avatar className="w-10 h-10">
             <AvatarImage src={user?.profileImageUrl || ""} alt={user?.firstName || ""} />
@@ -162,6 +163,7 @@ export default function Sidebar({ className, onItemClick }: SidebarProps) {
             size="sm"
             onClick={handleLogout}
             className="ml-2 text-gray-400 hover:text-gray-600"
+            data-testid="button-logout"
           >
             <LogOut size={16} />
           </Button>
