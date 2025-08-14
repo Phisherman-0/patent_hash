@@ -7,6 +7,7 @@ import {
   blockchainTransactions,
   patentActivity,
   type User,
+  type InsertUser,
   type UpsertUser,
   type Patent,
   type InsertPatent,
@@ -26,8 +27,10 @@ import { eq, desc, and, ilike, sql } from "drizzle-orm";
 
 // Interface for storage operations
 export interface IStorage {
-  // User operations (IMPORTANT: mandatory for Replit Auth)
+  // User operations
   getUser(id: string): Promise<User | undefined>;
+  createUser(user: Omit<InsertUser, 'id'>): Promise<User>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
   
   // Patent operations
@@ -62,25 +65,34 @@ export interface IStorage {
   getUserActivities(userId: string, limit?: number): Promise<PatentActivity[]>;
   
   // Dashboard statistics
-  getUserStats(userId: string): Promise<{
+  getDashboardStats(userId: string): Promise<{
     totalPatents: number;
     pendingReviews: number;
     blockchainVerified: number;
     portfolioValue: string;
   }>;
-  
-  // Patent statistics by category
-  getPatentCategoryStats(userId: string): Promise<Array<{
+  getCategoryStats(userId: string): Promise<Array<{
     category: string;
     count: number;
     percentage: number;
   }>>;
+  
 }
 
 export class DatabaseStorage implements IStorage {
-  // User operations (IMPORTANT: mandatory for Replit Auth)
+  // User operations
   async getUser(id: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async createUser(userData: Omit<InsertUser, 'id'>): Promise<User> {
+    const [user] = await db.insert(users).values(userData).returning();
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
     return user;
   }
 
@@ -110,7 +122,7 @@ export class DatabaseStorage implements IStorage {
     return patent;
   }
 
-  async getPatentsByUser(userId: string): Promise<Patent[]> {
+  async getUserPatents(userId: string): Promise<Patent[]> {
     return await db
       .select()
       .from(patents)
@@ -246,7 +258,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Dashboard statistics
-  async getUserStats(userId: string): Promise<{
+  async getDashboardStats(userId: string): Promise<{
     totalPatents: number;
     pendingReviews: number;
     blockchainVerified: number;
@@ -271,7 +283,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Patent statistics by category
-  async getPatentCategoryStats(userId: string): Promise<Array<{
+  async getCategoryStats(userId: string): Promise<Array<{
     category: string;
     count: number;
     percentage: number;

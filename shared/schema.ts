@@ -31,9 +31,10 @@ export const sessions = pgTable(
 // (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  email: varchar("email").unique(),
-  firstName: varchar("first_name"),
-  lastName: varchar("last_name"),
+  email: varchar("email").unique().notNull(),
+  firstName: varchar("first_name").notNull(),
+  lastName: varchar("last_name").notNull(),
+  password: varchar("password").notNull(), // For custom authentication
   profileImageUrl: varchar("profile_image_url"),
   role: varchar("role").default("user"), // user, admin
   createdAt: timestamp("created_at").defaultNow(),
@@ -203,6 +204,7 @@ export const patentActivityRelations = relations(patentActivity, ({ one }) => ({
 }));
 
 // Schema types
+export type InsertUser = typeof users.$inferInsert;
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 
@@ -226,6 +228,12 @@ export type PatentActivity = typeof patentActivity.$inferSelect;
 
 // Zod schemas for validation
 export const insertPatentSchema = createInsertSchema(patents).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
