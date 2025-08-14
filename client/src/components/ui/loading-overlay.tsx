@@ -26,7 +26,7 @@ export function LoadingOverlay({
     >
       <div className="flex flex-col items-center space-y-4 text-white">
         <Loader2 
-          className="h-12 w-12 animate-spin text-blue-500" 
+          className="h-12 w-12 animate-spin text-orange-500" 
           data-testid="loading-spinner"
         />
         <div className="text-lg font-medium" data-testid="loading-message">
